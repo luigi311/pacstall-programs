@@ -31,11 +31,10 @@ makedepends=(
   'patchutils'
   'clang'
   'nasm'
-  'amf-headers'
+  #'amf-headers'
   'ffnvcodec-headers'
   'opencl-headers'
-  'libvulkan-dev'
-  #'decklink-sdk'
+  #'vulkan-headers'
 )
 depends=(
   'alsa-lib'
