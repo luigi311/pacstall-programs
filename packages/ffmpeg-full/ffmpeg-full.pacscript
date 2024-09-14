@@ -30,6 +30,7 @@ sha256sums=(
 pacdeps=(
   'amf-headers'
   'ffnvcodec-headers'
+  #'vulkan-headers'
 )
 makedepends=(
   'patchutils'
@@ -111,6 +112,7 @@ makedepends=(
   'libva-dev'
   'libvidstab-dev'
   'libvdpau-dev'
+  'libv4l-dev'
   'libvorbis-dev'
   'libvpl-dev'
   'libvpx-dev'
@@ -125,15 +127,16 @@ makedepends=(
   'libxvidcore-dev'
   'libwebp-dev'
   'libvo-amrwbenc-dev'
-  'libvulkan-dev'
   'libzimg-dev'
   'libzvbi-dev'
   'lv2-dev'
+  'nvidia-cuda-toolkit'
   'flite1-dev'
   'frei0r-plugins-dev'
   'glslang-dev'
   'nvidia-cuda-dev'
   'ocl-icd-opencl-dev'
+  'svt-av1'
 )
 depends=(
   #'avisynthplus'
@@ -189,14 +192,13 @@ build() {
     --enable-gpl \
     --enable-version3 \
     --enable-nonfree \
-    --enable-shared \
-    --disable-static \
+    --disable-shared \
+    --enable-static \
     --disable-stripping \
     --disable-htmlpages \
     --enable-gray \
     \
     --enable-alsa \
-    --enable-avisynth \
     --enable-bzlib \
     --enable-chromaprint \
     --enable-frei0r \
@@ -204,16 +206,12 @@ build() {
     --enable-gmp \
     --enable-gnutls \
     --enable-iconv \
-    --enable-ladspa \
-    --enable-lcms2 \
     --enable-libaom \
     --enable-libaribb24 \
-    --enable-libaribcaption \
     --enable-libass \
     --enable-libbluray \
     --enable-libbs2b \
     --enable-libcaca \
-    --enable-libcelt \
     --enable-libcdio \
     --enable-libcodec2 \
     --enable-libdav1d \
@@ -231,29 +229,19 @@ build() {
     --enable-libgme \
     --enable-libgsm \
     --enable-libiec61883 \
-    --enable-libilbc \
     --enable-libjack \
-    --enable-libjxl \
-    --enable-libklvanc \
-    --enable-libkvazaar \
-    --enable-liblensfun \
     --enable-libmodplug \
     --enable-libmp3lame \
     --enable-libopencore-amrnb \
     --enable-libopencore-amrwb \
-    --enable-libopencv \
     --enable-libopenh264 \
     --enable-libopenjpeg \
     --enable-libopenmpt \
-    --enable-libopenvino \
     --enable-libopus \
     --enable-libplacebo \
     --enable-libpulse \
     --enable-libqrencode \
-    --enable-libquirc \
     --enable-librabbitmq \
-    --enable-librav1e \
-    --enable-librist \
     --enable-librsvg \
     --enable-librubberband \
     --enable-librtmp \
@@ -265,35 +253,25 @@ build() {
     --enable-libspeex \
     --enable-libsrt \
     --enable-libssh \
-    --enable-libsvtav1 \
     --disable-libtensorflow \
     --enable-libtesseract \
     --enable-libtheora \
     --disable-libtls \
     --disable-libtorch \
     --enable-libtwolame \
-    --enable-libuavs3d \
     --enable-libv4l2 \
     --enable-libvidstab \
-    --enable-libvmaf \
     --enable-libvo-amrwbenc \
     --enable-libvorbis \
     --enable-libvpx \
     --enable-libwebp \
     --enable-libx264 \
     --enable-libx265 \
-    --enable-libxevd \
-    --enable-libxeve \
-    --enable-libxavs \
     --enable-libxavs2 \
     --enable-libxcb \
-    --enable-libxcb-shm \
-    --enable-libxcb-xfixes \
-    --enable-libxcb-shape \
     --enable-libxvid \
     --enable-libxml2 \
     --enable-libzimg \
-    --enable-libzmq \
     --enable-libzvbi \
     --enable-lv2 \
     --enable-lzma \
@@ -307,8 +285,6 @@ build() {
     --disable-pocketsphinx \
     --enable-sndio \
     --enable-sdl2 \
-    --enable-vapoursynth \
-    --enable-vulkan \
     --enable-xlib \
     --enable-zlib \
     \
@@ -318,7 +294,6 @@ build() {
     --enable-cuvid \
     --enable-ffnvcodec \
     --enable-libdrm \
-    --enable-libvpl \
     --enable-libnpp \
     --enable-nvdec \
     --enable-nvenc \
@@ -326,12 +301,12 @@ build() {
     --enable-v4l2-m2m \
     --enable-vaapi \
     --enable-vdpau
-  make
+  make -j"${NCPU}"
   make tools/qt-faststart
 }
 
 package() {
   make -C "ffmpeg-${pkgver}" DESTDIR="${pkgdir}" install
   install -D -m755 "ffmpeg-${pkgver}/tools/qt-faststart" -t "${pkgdir}/usr/bin"
-  install -D -m644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  #install -D -m644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
 }
